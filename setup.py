@@ -19,8 +19,8 @@ setuptools.setup(
     author_email='mortonne@gmail.com',
     license='GPLv3',
     url='http://github.com/prestonlab/wikisim',
-    packages=setuptools.find_packages(),
-    package_dir={'wikisim': 'src'},
+    packages=setuptools.find_packages('src'),
+    package_dir={'': 'src'},
     package_data={'wikisim': ['resources/subjects.json']},
     scripts=scripts,
     classifiers=[
