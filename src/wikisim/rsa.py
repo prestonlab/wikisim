@@ -269,8 +269,9 @@ def roi_zstat_perm(df, model, n_perm=100000, method='fdr'):
     results = pd.DataFrame({'p': p, 'p_cor': p_cor}, index=rois)
 
     # add stats for mean
-    zstat = mat.agg(['mean', 'sem']).T
+    zstat = mat.agg(['mean', 'sem', 'std']).T
     results = pd.concat((zstat, results), axis=1)
+    results['d'] = results['mean'].abs() / results['std']
     return results
 
 
