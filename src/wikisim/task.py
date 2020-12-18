@@ -10,7 +10,7 @@ import pandas as pd
 
 def get_subjects(subset='wikisim'):
     """Get a list of included subject IDs."""
-    with resources.open_text('bender.resources', 'subjects.json') as f:
+    with resources.open_text('wikisim.resources', 'subjects.json') as f:
         subj_subsets = json.load(f)
 
     if subset not in subj_subsets:
