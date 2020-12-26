@@ -116,8 +116,7 @@ def load_roi_corr(roi_dir, rois, subj_ids=None, item_groups=None):
     for i, subj_id in enumerate(subj_ids):
         roi_list = []
         for roi in rois:
-            patterns, vols = load_roi_pattern(
-                os.path.join(roi_dir, roi), subj_id)
+            patterns, vols = load_roi_pattern(os.path.join(roi_dir, roi), subj_id)
             roi_list.append(np.mean(patterns, 1)[:, None])
         roi_mat = np.hstack(roi_list)
 
