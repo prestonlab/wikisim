@@ -10,3 +10,5 @@ tensorflow==1.14.0
 tensorflow-probability==0.7.0
 tensorflow-hub==0.8.0
 psiz==0.2.2
+geopandas
+shapely
