@@ -12,3 +12,4 @@ tensorflow-hub==0.8.0
 psiz==0.2.2
 geopandas
 shapely
+pingouin
