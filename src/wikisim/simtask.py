@@ -227,25 +227,27 @@ def parse_debrief(raw):
     subject = raw.groupby('Exp_ID').first()
     deb = subject.filter(like='FiQ_', axis=1)
 
-    cols = {('FiQ_How often did you feel like there was a clear choice of '
-             'which items were most similar?'): 'clear',
-            ('FiQ_How often were your choices influenced by how similar '
-             'the pictures looked?'): 'vis',
-            ('FiQ_How often were your choices influenced by what you knew '
-             'of the pictures?'): 'sem',
-            ('FiQ_In cases in which it was easier to make similarity judgments '
-             'and you did not select at random, how did you make your choices? '
-             'Please be specific.'): 'description',
-            ('FiQ_Is there any other feedback you can provide that could be '
-             'helpful to us? For example, was the task too difficult, '
-             'boring, etc.?'): 'feedback',
-            ('FiQ_Did the experiment go smoothly or were there problems? Your '
-             'compensation will not depend on your answer below, so please be '
-             'honest!'): 'quality',
-            'FiQ_Which of the following problems did you have?_none':
-                'problems_none',
-            'FiQ_Which of the following problems did you have?_blank page':
-                'problems_blank'}
+    cols = {
+        ('FiQ_How often did you feel like there was a clear choice of '
+        'which items were most similar?'): 'clear',
+        ('FiQ_How often were your choices influenced by how similar '
+         'the pictures looked?'): 'vis',
+        ('FiQ_How often were your choices influenced by what you knew '
+         'of the pictures?'): 'sem',
+        ('FiQ_In cases in which it was easier to make similarity judgments '
+         'and you did not select at random, how did you make your choices? '
+         'Please be specific.'): 'description',
+        ('FiQ_Is there any other feedback you can provide that could be '
+         'helpful to us? For example, was the task too difficult, '
+         'boring, etc.?'): 'feedback',
+        ('FiQ_Did the experiment go smoothly or were there problems? Your '
+         'compensation will not depend on your answer below, so please be '
+         'honest!'): 'quality',
+        'FiQ_Which of the following problems did you have?_none':
+            'problems_none',
+        'FiQ_Which of the following problems did you have?_blank page':
+            'problems_blank'
+    }
     deb = deb.rename(mapper=cols, axis=1)
     deb.loc[:, 'condition'] = subject['Exp_Condition Number']
     deb = deb.reindex(['condition', 'clear', 'vis', 'sem',

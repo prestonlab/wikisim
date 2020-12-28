@@ -341,8 +341,9 @@ def dependent_corr(xy, xz, yz, n, twotailed=True):
     av = (xy + xz) / 2
     cube = (1 - yz) * (1 - yz) * (1 - yz)
 
-    t2 = d * np.sqrt((n - 1) * (1 + yz) /
-                     ((2 * (n - 1) / (n - 3)) * determ + av * av * cube))
+    t2 = d * np.sqrt(
+        (n - 1) * (1 + yz) / ((2 * (n - 1) / (n - 3)) * determ + av * av * cube)
+    )
     p = 1 - stats.t.cdf(abs(t2), n - 3)
     if twotailed:
         p *= 2
