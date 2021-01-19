@@ -101,13 +101,16 @@ def plot_roi_zstat(df, model, hue, palette, ax=None,
 
 
 def plot_zstat_perm(df, model, test_type, n_perm=100000, n_boot=100000,
-                    method='fdr', sig_offset=3.75, max_offset=4, ax=None):
+                    method='fdr', sig_offset=3.75, max_offset=4, sig_col='p_cor',
+                    sig_alpha=0.05, by_network=False, ax=None):
     """Plot zstat by ROI with significance."""
     if ax is None:
         ax = plt.gca()
 
     # test for significance and correct for multiple comparisons
-    sig = rsa.roi_zstat_perm(df, model, n_perm=n_perm, method=method)
+    sig = rsa.roi_zstat_perm(
+        df, model, n_perm=n_perm, method=method, by_network=by_network
+    )
 
     if test_type == 'face':
         pal_name = 'Reds_r'
@@ -128,7 +131,8 @@ def plot_zstat_perm(df, model, test_type, n_perm=100000, n_boot=100000,
         palette = full[3:6]
 
     plot_roi_zstat(df, model, 'net', palette, ax=ax, n_boot=n_boot,
-                   sig=sig, sig_offset=sig_offset)
+                   sig=sig, sig_offset=sig_offset, sig_col=sig_col,
+                   sig_alpha=sig_alpha)
     ax.set_ylim(-max_offset, max_offset)
 
     # label axes
