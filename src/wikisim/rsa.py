@@ -251,6 +251,8 @@ def sign_perm(mat, n_perm, method='fdr', tail='right'):
     elif method == 'fwe':
         stat_max = np.max(stat_perm, 0)
         p_cor = np.mean(stat_max[None, :] >= stat_perm[:, :1], 1)
+    elif method == 'none':
+        p_cor = p.copy()
     else:
         raise ValueError(f'Invalid method: {method}')
     return p, p_cor
