@@ -3,6 +3,7 @@
 import os
 import numpy as np
 from scipy import stats
+from statsmodels.stats.multitest import multipletests
 from scipy import optimize
 import scipy.spatial.distance as sd
 import pandas as pd
@@ -248,6 +249,9 @@ def sign_perm(mat, n_perm, method='fdr', tail='right'):
     # compare to pooled distribution
     if method == 'fdr':
         p_cor = np.mean(stat_perm.flatten() >= stat_perm[:, :1], 1)
+    elif method == 'fdr_bh':
+        out = multipletests(p, alpha=0.05, method='fdr_bh')
+        p_cor = out[1]
     elif method == 'fwe':
         stat_max = np.max(stat_perm, 0)
         p_cor = np.mean(stat_max[None, :] >= stat_perm[:, :1], 1)
