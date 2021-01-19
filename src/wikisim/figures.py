@@ -61,7 +61,8 @@ def plot_swarm_error(x=None, y=None, hue=None, palette=None, color='k',
 
 
 def plot_roi_zstat(df, model, hue, palette, ax=None,
-                   sig=None, sig_offset=None, n_boot=100000):
+                   sig=None, sig_offset=None, n_boot=100000, sig_col='p_cor',
+                   sig_alpha=0.05):
     """Plot z-statistics by ROI."""
     if ax is None:
         ax = plt.gca()
@@ -82,7 +83,11 @@ def plot_roi_zstat(df, model, hue, palette, ax=None,
             offset = y_max + eta * 1.5
         else:
             offset = None
-        plot_sig(sig, sig_offset)
+        if sig_col != 'p_cor':
+            sig = sig.copy()
+            sig['p_cor'] = sig[sig_col]
+        sig = sig.reindex(index=order)
+        plot_sig(sig, sig_offset, alpha=sig_alpha)
 
     else:
         offset = None
