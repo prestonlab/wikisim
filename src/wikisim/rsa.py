@@ -143,8 +143,7 @@ def load_roi_zstat(res_dir, roi, subj_ids=None):
     return df
 
 
-def load_net_zstat(rsa_dir, model_set, category, rois, subj_ids=None,
-                   suffix=None):
+def load_net_zstat(rsa_dir, model_set, category, rois, subj_ids=None, suffix=None):
     """Load z-statistics for a model for a set of ROIs."""
     # get the directory with results for this model set and category
     res_dir = os.path.join(rsa_dir, f'prex_{model_set}_{category}')
@@ -321,7 +320,7 @@ def sign_perm_t(mat, n_perm, beta, test='t'):
 
 
 def roi_zstat_perm(
-        df, model, n_perm=100000, method='fdr', beta=0.05, by_network=False
+    df, model, n_perm=100000, method='fdr', beta=0.05, by_network=False
 ):
     """Test ROI correlations using a permutation test."""
     # shape into matrix format
@@ -369,8 +368,10 @@ def net_zstat_perm(df, model, n_perm=100000, method='fdr'):
     return results
 
 
-def roi_resid_geo(roi_dir, model_dir, control_models, geo_edges,
-                  geo_model='geo', subj_ids=None, rank=False):
+def roi_resid_geo(
+    roi_dir, model_dir, control_models, geo_edges, geo_model='geo', subj_ids=None,
+    rank=False
+):
     """Calculate ROI residuals within geography distance bins."""
     if subj_ids is None:
         subj_ids = task.get_subjects()

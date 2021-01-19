@@ -44,9 +44,10 @@ def plot_sig(results, y, ax=None, alpha=0.05, plot_uncorr=False):
                 color='k', linestyle='', marker=(4, 2, 0))
 
 
-def plot_swarm_error(x=None, y=None, hue=None, palette=None, color='k',
-                     capsize=.5, data=None, n_boot=100000,
-                     ax=None, **sns_options):
+def plot_swarm_error(
+    x=None, y=None, hue=None, palette=None, color='k', capsize=.5, data=None,
+    n_boot=100000, ax=None, **sns_options
+):
     """Plot swarm plot with error bars."""
     ax = sns.swarmplot(x=x, y=y, hue=hue, data=data, palette=palette,
                        size=4.5, ax=ax, **sns_options)
@@ -60,9 +61,10 @@ def plot_swarm_error(x=None, y=None, hue=None, palette=None, color='k',
     ax.tick_params(axis='x', labelsize='large')
 
 
-def plot_roi_zstat(df, model, hue, palette, ax=None,
-                   sig=None, sig_offset=None, n_boot=100000, sig_col='p_cor',
-                   sig_alpha=0.05):
+def plot_roi_zstat(
+    df, model, hue, palette, ax=None, sig=None, sig_offset=None, n_boot=100000,
+    sig_col='p_cor', sig_alpha=0.05
+):
     """Plot z-statistics by ROI."""
     if ax is None:
         ax = plt.gca()
@@ -100,9 +102,11 @@ def plot_roi_zstat(df, model, hue, palette, ax=None,
     ax.get_legend().remove()
 
 
-def plot_zstat_perm(df, model, test_type, n_perm=100000, n_boot=100000,
-                    method='fdr', sig_offset=3.75, max_offset=4, sig_col='p_cor',
-                    sig_alpha=0.05, by_network=False, ax=None):
+def plot_zstat_perm(
+    df, model, test_type, n_perm=100000, n_boot=100000, method='fdr',
+    sig_offset=3.75, max_offset=4, sig_col='p_cor', sig_alpha=0.05,
+    by_network=False, ax=None
+):
     """Plot zstat by ROI with significance."""
     if ax is None:
         ax = plt.gca()
@@ -152,9 +156,10 @@ def plot_zstat_perm(df, model, test_type, n_perm=100000, n_boot=100000,
     return sig
 
 
-def plot_roi_resid_geo(roi_dir, roi, roi_label, model_dir, control_models,
-                       geo_model='geo', subj_ids=None, rank=False,
-                       ax=None):
+def plot_roi_resid_geo(
+    roi_dir, roi, roi_label, model_dir, control_models, geo_model='geo',
+    subj_ids=None, rank=False, ax=None
+):
     """Plot ROI RDM residuals as a function of geographical distance."""
     geo_edges = np.arange(0, 16000, 3000)
     df = rsa.roi_resid_geo(os.path.join(roi_dir, roi), model_dir,
