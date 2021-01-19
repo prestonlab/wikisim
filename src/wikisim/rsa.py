@@ -262,6 +262,64 @@ def sign_perm(mat, n_perm, method='fdr', tail='right'):
     return p, p_cor
 
 
+def sign_perm_t(mat, n_perm, beta, test='t'):
+    """Test for significantly positive values with FDR correction."""
+    # generate random sign flips
+    n_samp, n_test = mat.shape
+    rand_sign = np.hstack(
+        (np.ones((n_samp, 1)), np.random.choice([-1, 1], (n_samp, n_perm)))
+    )
+
+    # apply random sign to all conditions
+    mat_perm = mat[:, :, None] * rand_sign[:, None, :]
+
+    # ttest vs zero for permuted and actual stats
+    if test == 't':
+        perm_t, perm_p = stats.ttest_1samp(mat_perm, 0, axis=0)
+        t, p = stats.ttest_1samp(mat_perm[:, :, 0], 0, axis=0)
+
+        # convert to right-tailed test
+        perm_p /= 2
+        perm_p[perm_t < 0] = 1 - perm_p[perm_t < 0]
+        p /= 2
+        p[t < 0] = 1 - p[t < 0]
+    else:
+        raise ValueError(f'Invalid test type: {test}.')
+
+    # q-value at each actual p-value
+    ERstar = np.zeros(p.shape)
+    r = np.zeros(p.shape)
+    rstarb = np.zeros(p.shape)
+    m = n_test
+    q = np.zeros(p.shape)
+    for i, a in enumerate(p):
+        # expected value of number of rejections under the null
+        Rstar = np.sum(perm_p <= a, 0)
+        ERstar[i] = np.mean(Rstar)
+
+        # 1 - beta quantile of Rstar
+        rstarb[i] = np.quantile(Rstar, 1 - beta)
+
+        # number of actual rejections
+        r[i] = np.sum(p <= a)
+
+        # FDR local estimator
+        if (r[i] - rstarb[i]) >= (a * m):
+            q[i] = ERstar[i] / (ERstar[i] + r[i] - (a * m))
+        else:
+            q[i] = np.mean(Rstar >= 1)
+
+    # package results
+    std = np.std(mat, axis=0, ddof=1)
+    mean = np.mean(mat, axis=0)
+    sem = stats.sem(mat, axis=0)
+    df = pd.DataFrame({
+        't': t, 'p': p, 'q': q, 'ERstar': ERstar, 'rstarb': rstarb, 'r': r,
+        'mean': mean, 'std': std, 'sem': sem, 'd': np.abs(mean) / std
+    })
+    return df
+
+
 def roi_zstat_perm(df, model, n_perm=100000, method='fdr'):
     """Test ROI correlations using a permutation test."""
     # shape into matrix format
