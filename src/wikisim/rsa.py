@@ -320,21 +320,42 @@ def sign_perm_t(mat, n_perm, beta, test='t'):
     return df
 
 
-def roi_zstat_perm(df, model, n_perm=100000, method='fdr'):
+def roi_zstat_perm(
+        df, model, n_perm=100000, method='fdr', beta=0.05, by_network=False
+):
     """Test ROI correlations using a permutation test."""
     # shape into matrix format
     rois = df.roi.unique()
+    nets = df.net.unique()
     mat = df.pivot(index='subj_id', columns='roi', values=model)
     mat = mat.reindex(columns=rois)
 
     # run sign flipping test
-    p, p_cor = sign_perm(mat.to_numpy(), n_perm, method=method)
-    results = pd.DataFrame({'p': p, 'p_cor': p_cor}, index=rois)
+    if method == 't':
+        if by_network:
+            # correct within each network
+            list_results = []
+            for net in nets:
+                inc_rois = df.loc[df['net'] == net, 'roi'].unique()
+                net_mat = mat.filter(inc_rois)
+                net_results = sign_perm_t(
+                    net_mat.to_numpy(), n_perm, beta, test=method
+                )
+                net_results.index = net_mat.columns
+                list_results.append(net_results)
+            results = pd.concat(list_results, axis=0)
+        else:
+            # correct across all ROIs
+            results = sign_perm_t(mat.to_numpy(), n_perm, beta, test=method)
+            results.index = mat.columns
+    else:
+        p, p_cor = sign_perm(mat.to_numpy(), n_perm, method=method)
+        results = pd.DataFrame({'p': p, 'p_cor': p_cor}, index=rois)
 
-    # add stats for mean
-    zstat = mat.agg(['mean', 'sem', 'std']).T
-    results = pd.concat((zstat, results), axis=1)
-    results['d'] = results['mean'].abs() / results['std']
+        # add stats for mean
+        zstat = mat.agg(['mean', 'sem', 'std']).T
+        results = pd.concat((zstat, results), axis=1)
+        results['d'] = results['mean'].abs() / results['std']
     return results
 
 
