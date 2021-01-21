@@ -118,13 +118,13 @@ def plot_zstat_perm(
 
     if test_type == 'face':
         pal_name = 'Reds_r'
-        test = 'Face'
+        test = 'Person'
     elif test_type == 'scene':
         pal_name = 'Blues_r'
-        test = 'Scene'
+        test = 'Place'
     else:
         pal_name = 'Greens_r'
-        test = 'Scene'
+        test = 'Place'
 
     # get subset of palette that varies in color
     # but isn't too saturated
