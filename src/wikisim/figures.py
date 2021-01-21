@@ -33,14 +33,14 @@ def plot_sig(results, y, ax=None, alpha=0.05, plot_uncorr=False):
     # plot corrected significance as stars
     sig_cor = results.p_cor < alpha
     ind_cor = sig_cor.to_numpy().nonzero()[0]
-    ax.plot(ind_cor, np.tile(y, ind_cor.shape), markersize=10,
+    ax.plot(ind_cor, np.tile(y, ind_cor.shape), markersize=8,
             color='k', linestyle='', marker=(5, 2, 0))
 
     # plot uncorrected significance as pluses
     if plot_uncorr:
         sig = ~sig_cor & (results.p < alpha)
         ind = sig.to_numpy().nonzero()[0]
-        ax.plot(ind, np.tile(y, ind.shape), markersize=10,
+        ax.plot(ind, np.tile(y, ind.shape), markersize=8,
                 color='k', linestyle='', marker=(4, 2, 0))
 
 
@@ -50,15 +50,15 @@ def plot_swarm_error(
 ):
     """Plot swarm plot with error bars."""
     ax = sns.swarmplot(x=x, y=y, hue=hue, data=data, palette=palette,
-                       size=4.5, ax=ax, **sns_options)
+                       size=3.5, ax=ax, **sns_options)
     sns.pointplot(x=x, y=y, hue=hue, data=data, color=color, ci=95, join=False,
                   capsize=capsize, ax=ax, n_boot=n_boot, **sns_options)
 
-    plt.setp(ax.lines, zorder=100, linewidth=1.5)
-    plt.setp(ax.collections, zorder=100)
+    plt.setp(ax.lines, zorder=100, linewidth=1)
+    plt.setp(ax.collections, zorder=100, sizes=[8])
 
     ax.set_xlabel(None)
-    ax.tick_params(axis='x', labelsize='large')
+    ax.tick_params(axis='x', labelsize='medium')
 
 
 def plot_roi_zstat(
