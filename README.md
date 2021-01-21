@@ -13,13 +13,7 @@ Next, install swig:
 conda install swig
 ```
 
-To install the latest stable version:
-
-```bash
-pip install wikisim
-```
-
-To install the latest development version:
+To install the latest version:
 
 ```bash
 pip install git+git://github.com/prestonlab/wikisim
