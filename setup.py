@@ -11,7 +11,7 @@ scripts = glob.glob('bin/*.sh') + glob.glob('bin/*.py')
 
 setuptools.setup(
     name='wikisim',
-    version='1.1.1',
+    version='1.1.2',
     description='Neural representation of semantic similarity for famous people and places.',
     long_description=readme(),
     long_description_content_type="text/markdown",
